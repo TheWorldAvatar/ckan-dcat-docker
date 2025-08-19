@@ -32,12 +32,15 @@ This repo provides a custom Dockerfile with DCAT extension and Harvester.
 I tested harvesting the metadata from the CReDo Blazegraph repository with the URL: https://credo.theworldavatar.io/power/blazegraph/ui/namespace/kb/sparql?query=CONSTRUCT%20%7B%3Fs%20%3Fp%20%3Fo%7D%20WHERE%20%7B%3Fs%20%3Fp%20%3Fo%7D&format=
 
 ## Steps to Test Harvesting
-Step-1: Login to the CKAN site (https://localhost:8443) with user-name and password (`ckan_admin` and `test1234` by default)
-Step-2: Create an organization (https://localhost:8443/dashboard/organizations)
-Step-3: Go to the url https://localhost:8443/harvest and click "Add Harvest Source"
-Step-4: Create a harvest source
-Step-5: Click "Admin" and then "Reharvest" tab
-Step-6: Wait/refresh till it collects all datasets from the repository 
+### Steps
+
+1. Login to the CKAN site (https://localhost:8443) with username and password (`ckan_admin` and `test1234` by default).  
+2. Create an organization (https://localhost:8443/dashboard/organizations).  
+3. Go to https://localhost:8443/harvest and click **"Add Harvest Source"**.  
+4. Create a harvest source.  
+5. Click **"Admin"** and then the **"Reharvest"** tab.  
+6. Wait/refresh until it collects all datasets from the repository.  
+
 
 <!-- # Document differences between our current use of DCAT/DCTerms predicates and CKAN/DCAT-AP's use
 # Try adding the CKAN, datapusher and solr services to the stack

@@ -83,16 +83,39 @@ Example:
 ```bash
 python ckanctl.py create-harvest --name credo-harvest --url "https://credo.theworldavatar.io/power/blazegraph/ui/namespace/kb/sparql?query=CONSTRUCT%20%7B%3Fs%20%3Fp%20%3Fo%7D%20WHERE%20%7B%3Fs%20%3Fp%20%3Fo%7D&format=" --source-type dcat_rdf --owner-org flood-org
 ```
+CKAN-DCAT harvesters (like dcat_rdf) are designed to extract dataset metadata, not raw data triples. Collecting all raw data may sometimes raise error "Remote file is too big."
+To handle this type of error, we can simply collect all sort of metadata only, rather than collecting all data triples.
 
+```SPARQL
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+
+CONSTRUCT {
+  ?dataset ?p ?o .
+}
+WHERE {
+  ?dataset a dcat:Dataset ;
+           ?p ?o .
+}
+```
+This SPARQL produces datasets and relevant properties: 
+- ?dataset a dcat:Dataset ensures we only fetch resources that are datasets.
+- ?p ?o retrieves all properties for that dataset, not just title/description.
+- We can also LIMIT 100 (which is optional) that can eliminate chances to avoid huge payloads.
+
+Example:
+
+```bash
+https://pirmasens.cmpg.io/blazegraph/namespace/cea/sparql?query=CONSTRUCT%20%7B%3Fdataset%20%3Fp%20%3Fo%7D%20WHERE%20%7B%3Fdataset%20a%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23Dataset%3E%20%3B%20%3Fp%20%3Fo%20.%7D&format=text/turtle
+```
 #### Trigger Harvest
 
 ```bash
-python ckanctl.py trigger-harvest --source <source_id_or_name>
+python ckanctl.py trigger-harvest --source <source_id>
 ```
 
 Example:
 ```bash
-python ckanctl.py trigger-harvest --source credo-harvest
+python ckanctl.py trigger-harvest --source 5224bea4-79e4-4fb6-bd9c-4b0ee70dfdad
 ```
 
 ### Dataset Management

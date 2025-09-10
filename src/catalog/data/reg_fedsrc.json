@@ -1,0 +1,14 @@
+[
+  {
+    "name": "eu-open-data",
+    "url": "https://data.europa.eu/data/api",
+    "source_type": "dcat_rdf",
+    "owner_org": "flood-org"
+  },
+  {
+    "name": "uk-open-data",
+    "url": "https://data.gov.uk/",
+    "source_type": "dcat_rdf",
+    "owner_org": "flood-org"
+  }
+]

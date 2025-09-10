@@ -1,0 +1,35 @@
+{
+  "id": "grid-and-primary-sites",              
+  "name": "grid-and-primary-sites",          
+  "title": "Grid and Primary Sites",
+  "notes": "Longer description of the dataset (Markdown supported).",
+
+  "author": "Hanif Seddiqui",
+  "author_email": "mhs62@cam.ac.uk",
+  "maintainer": "Maintainer Name",
+  "maintainer_email": "maintainer@example.com",
+
+  "license_id": "cc-by",                   
+  "private": false,                        
+  "state": "active",                       
+  "owner_org": "cmcl",  
+  "type": "dataset",
+  "version": "1.0",
+  "url": "https://example.com/dataset-homepage",
+
+  "tags": [
+    { "name": "climate" },
+    { "name": "weather" },
+    { "name": "temperature" }
+  ],
+
+  "groups": [
+    { "name": "environment" },
+    { "name": "sustainability" }
+  ],
+
+  "extras": [
+    { "key": "domain", "value": "climate-science" },
+    { "key": "ontology_link", "value": "http://theworldavatar.org/ontology#ClimateData" }
+  ]
+}

@@ -47,6 +47,7 @@ services:
       - site_packages:/usr/lib/python3.10/site-packages
     environment:
       CKAN_LANG: en
+      CKAN__HARVEST__MAX_FILE_SIZE: 500
       DCAT_ENABLE_CONTENT_NEGOTIATION: true
       HARVEST_MQ_HOSTNAME: redis
 

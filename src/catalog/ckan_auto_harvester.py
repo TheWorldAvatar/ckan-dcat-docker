@@ -54,30 +54,54 @@ class CkanAutoHarvester:
             payload["notes"] = notes
         return self._post("harvest_source_create", payload)
 
-    def trigger_harvest(self, source_id):
-        payload = {"source_id": source_id}
-        return self._post("harvest_job_create", payload)
+    def resolve_source_id(self, source_identifier):
+        """Resolve a harvest source name or UUID into a UUID."""
+        params = {"id": source_identifier}
+        resp = self._get("harvest_source_show", params)
 
+        if not resp.get("success"):
+            raise ValueError(f"Could not resolve harvest source: {source_identifier} → {resp}")
+
+        result = resp.get("result")
+        if not result or "id" not in result:
+            raise ValueError(f"No valid source found for {source_identifier}")
+
+        return result["id"]  # Always UUID
+    def trigger_harvest(self, source_id):
+        try:
+            source_uuid = self.resolve_source_id(source_id)
+            print("Resolved UUID:", source_uuid)
+            payload = {"source_id": source_uuid}
+            resp = self._post("harvest_job_create", payload)
+            return resp
+        except Exception as e:
+            print("Error triggering harvest:", str(e))
+            return {"success": False, "error": str(e)}
+    
     def get_last_harvest_job(self, source_id):
-        resp = self._get("harvest_source_show", {"id": source_id})
+        resp = self._get("harvest_source_show", {"source_id": source_id})
         if not resp.get("success"):
             return None
         jobs = resp["result"].get("status", {}).get("last_jobs", [])
         return jobs[0] if jobs else None
 
-    def wait_for_harvest_completion(self, source_id, poll_interval=10):
-        print("Polling harvest job status...")
+
+    
+    def wait_for_harvest_completion(self, source_identifier, poll_interval=10):
+        source_uuid = self.resolve_source_id(source_identifier)
+        print(f"Polling harvest job status for source: {source_identifier} ...")
         while True:
-            job = self.get_last_harvest_job(source_id)
+            job = self.get_last_harvest_job(source_uuid)
             if not job:
                 print("No job found yet. Waiting...")
             else:
                 state = job.get("status")
-                print("Current harvest job state:", state)
+                print(f"Current harvest job state: {state}")
                 if state in ["Finished", "Completed", "Failed", "Errored"]:
-                    print("Harvest finished with status:", state)
+                    print(f"Harvest finished with status: {state}")
                     break
             time.sleep(poll_interval)
+
 
     def federated_harvest(self, sources_file: str):
         """Harvest datasets from multiple federated sources"""

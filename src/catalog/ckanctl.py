@@ -15,9 +15,7 @@ def create_harvest(args):
 def trigger_harvest(args):
     resp = ckan.trigger_harvest(args.source)
     print(json.dumps(resp, indent=2))
-    if resp.get("success"):
-        ckan.wait_for_harvest_completion(args.source)
-
+    
 def federated_harvest(args):
     resp = ckan.federated_harvest(args.sources_file)
     print(json.dumps(resp, indent=2))
@@ -36,7 +34,7 @@ def update_dataset(args):
     if not update_flag:
         print("Make sure you have provided either json-data or file-path containing json-data for 'updates'")
 
-def upload_file(args):
+def upload_data_file(args):
     resp = ckan.upload_file_to_dataset(args.dataset, args.file)
     print(json.dumps(resp, indent=2))
 
@@ -47,7 +45,7 @@ def link_resource(args):
 # ======================================
 
 def add_sparql(args):
-    resp = ckan.add_sparql_endpoint(args.dataset, args.sparql_url)
+    resp = ckan.add_sparql_endpoint(args.dataset, args.endpoint)
     print(json.dumps(resp, indent=2))
 
 def federated_query(args):
@@ -104,10 +102,10 @@ def main():
     p_update.add_argument("--json-file", help="File containing JSON string of fields to update")
     p_update.set_defaults(func=update_dataset)
 
-    p_upload = subparsers.add_parser("upload-file", help="Upload local file as dataset resource")
+    p_upload = subparsers.add_parser("upload-data-file", help="Upload local file as dataset resource")
     p_upload.add_argument("--dataset", required=True)
     p_upload.add_argument("--file", required=True)
-    p_upload.set_defaults(func=upload_file)
+    p_upload.set_defaults(func=upload_data_file)
 
     p_link = subparsers.add_parser("link-resource", help="Link an external resource to dataset")
     p_link.add_argument("--dataset", required=True)
@@ -120,7 +118,7 @@ def main():
     # --------------------------
     p_sparql = subparsers.add_parser("add-sparql", help="Add SPARQL endpoint to dataset metadata")
     p_sparql.add_argument("--dataset", required=True)
-    p_sparql.add_argument("--sparql-url", required=True)
+    p_sparql.add_argument("--endpoint", required=True)
     p_sparql.set_defaults(func=add_sparql)
 
     p_federated = subparsers.add_parser("federated-query", help="Run federated query across datasets")

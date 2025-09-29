@@ -128,7 +128,7 @@ python ckanctl.py trigger-harvest --source <source_id>
 
 Example:
 ```bash
-python ckanctl.py trigger-harvest --source 5224bea4-79e4-4fb6-bd9c-4b0ee70dfdad
+python ckanctl.py trigger-harvest --source credo-harvest
 ```
 
 ### Dataset Management

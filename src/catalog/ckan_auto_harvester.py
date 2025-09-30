@@ -130,21 +130,22 @@ class CkanAutoHarvester:
         updates["id"] = dataset_id
         return self._post("package_update", updates)
 
-    def upload_file_to_dataset(self, dataset_id, file_path):
+    def upload_file_to_dataset(self, dataset_id, file_path, title="Resource"):
         url = f"{self.base_url}/api/3/action/resource_create"
         with open(file_path, "rb") as fp:
             files = {"upload": fp}
-            data = {"package_id": dataset_id}
+            data = {"package_id": dataset_id, "name": title}
             resp = requests.post(
                 url, headers={"Authorization": self.api_key},
                 data=data, files=files, verify=self.verify_ssl
             )
         return resp.json()
 
-    def link_resource_to_dataset(self, dataset_id, resource_url, format="CSV"):
+    def link_resource_to_dataset(self, dataset_id, resource_url, title="Resource", format="CSV"):
         payload = {
             "package_id": dataset_id,
             "url": resource_url,
+            "name": title,
             "format": format
         }
         return self._post("resource_create", payload)
@@ -193,13 +194,13 @@ class CkanAutoHarvester:
         else:
             return {"error": resp.text}
 
-    def federated_query(self, keyword, query_template):
-        """
-        Run the same SPARQL query against all endpoints discovered by keyword.
-        """
-        endpoints = self.get_sparql_endpoints(keyword)
-        results = {}
-        for ep in endpoints:
-            print(f"Querying {ep}...")
-            results[ep] = self.run_sparql_query(ep, query_template)
-        return results
+    # def federated_query(self, keyword, query_template):
+    #     """
+    #     Run the same SPARQL query against all endpoints discovered by keyword.
+    #     """
+    #     endpoints = self.get_sparql_endpoints(keyword)
+    #     results = {}
+    #     for ep in endpoints:
+    #         print(f"Querying {ep}...")
+    #         results[ep] = self.run_sparql_query(ep, query_template)
+    #     return results

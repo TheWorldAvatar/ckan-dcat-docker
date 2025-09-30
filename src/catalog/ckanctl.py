@@ -104,11 +104,13 @@ def main():
 
     p_upload = subparsers.add_parser("upload-data-file", help="Upload local file as dataset resource")
     p_upload.add_argument("--dataset", required=True)
+    p_upload.add_argument("--title", required=True)
     p_upload.add_argument("--file", required=True)
     p_upload.set_defaults(func=upload_data_file)
 
     p_link = subparsers.add_parser("link-resource", help="Link an external resource to dataset")
     p_link.add_argument("--dataset", required=True)
+    p_link.add_argument("--title", required=True)
     p_link.add_argument("--url", required=True)
     p_link.add_argument("--format", default="CSV")
     p_link.set_defaults(func=link_resource)

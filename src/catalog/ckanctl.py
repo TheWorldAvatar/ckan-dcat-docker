@@ -35,11 +35,11 @@ def update_dataset(args):
         print("Make sure you have provided either json-data or file-path containing json-data for 'updates'")
 
 def upload_data_file(args):
-    resp = ckan.upload_file_to_dataset(args.dataset, args.file)
+    resp = ckan.upload_file_to_dataset(args.dataset, args.file, args.title)
     print(json.dumps(resp, indent=2))
 
 def link_resource(args):
-    resp = ckan.link_resource_to_dataset(args.dataset, args.url, args.format)
+    resp = ckan.link_resource_to_dataset(args.dataset, args.url, args.title, args.format)
     print(json.dumps(resp, indent=2))
     
 # ======================================
